@@ -9,21 +9,25 @@
 /* Begin PBXBuildFile section */
 		C9AD724F2A022BC4005B9B5B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9AD724E2A022BC4005B9B5B /* AppDelegate.swift */; };
 		C9AD72512A022BC4005B9B5B /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9AD72502A022BC4005B9B5B /* SceneDelegate.swift */; };
-		C9AD72532A022BC4005B9B5B /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9AD72522A022BC4005B9B5B /* ViewController.swift */; };
 		C9AD72562A022BC4005B9B5B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C9AD72542A022BC4005B9B5B /* Main.storyboard */; };
-		C9AD72582A022BC6005B9B5B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C9AD72572A022BC6005B9B5B /* Assets.xcassets */; };
 		C9AD725B2A022BC6005B9B5B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C9AD72592A022BC6005B9B5B /* LaunchScreen.storyboard */; };
+		C9AD72672A022C7B005B9B5B /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9AD72662A022C7B005B9B5B /* LoginViewController.swift */; };
+		C9AD726A2A023416005B9B5B /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9AD72692A023416005B9B5B /* Extensions.swift */; };
+		C9AD726C2A023B4E005B9B5B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C9AD726B2A023B4E005B9B5B /* Assets.xcassets */; };
+		C9AD726E2A02443D005B9B5B /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9AD726D2A02443D005B9B5B /* SignUpViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		C9AD724B2A022BC4005B9B5B /* instagram.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = instagram.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C9AD724E2A022BC4005B9B5B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C9AD72502A022BC4005B9B5B /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		C9AD72522A022BC4005B9B5B /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		C9AD72552A022BC4005B9B5B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		C9AD72572A022BC6005B9B5B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C9AD725A2A022BC6005B9B5B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		C9AD725C2A022BC6005B9B5B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C9AD72662A022C7B005B9B5B /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		C9AD72692A023416005B9B5B /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		C9AD726B2A023B4E005B9B5B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = ../../../Downloads/Assets.xcassets; sourceTree = "<group>"; };
+		C9AD726D2A02443D005B9B5B /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,15 +60,49 @@
 		C9AD724D2A022BC4005B9B5B /* instagram */ = {
 			isa = PBXGroup;
 			children = (
+				C9AD72682A023400005B9B5B /* Utils */,
+				C9AD72652A022C41005B9B5B /* Models */,
+				C9AD72642A022C3D005B9B5B /* Views */,
+				C9AD72622A022C30005B9B5B /* Controllers */,
 				C9AD724E2A022BC4005B9B5B /* AppDelegate.swift */,
 				C9AD72502A022BC4005B9B5B /* SceneDelegate.swift */,
-				C9AD72522A022BC4005B9B5B /* ViewController.swift */,
 				C9AD72542A022BC4005B9B5B /* Main.storyboard */,
-				C9AD72572A022BC6005B9B5B /* Assets.xcassets */,
 				C9AD72592A022BC6005B9B5B /* LaunchScreen.storyboard */,
+				C9AD726B2A023B4E005B9B5B /* Assets.xcassets */,
 				C9AD725C2A022BC6005B9B5B /* Info.plist */,
 			);
 			path = instagram;
+			sourceTree = "<group>";
+		};
+		C9AD72622A022C30005B9B5B /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				C9AD72662A022C7B005B9B5B /* LoginViewController.swift */,
+				C9AD726D2A02443D005B9B5B /* SignUpViewController.swift */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
+		C9AD72642A022C3D005B9B5B /* Views */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		C9AD72652A022C41005B9B5B /* Models */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		C9AD72682A023400005B9B5B /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				C9AD72692A023416005B9B5B /* Extensions.swift */,
+			);
+			path = Utils;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -126,7 +164,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C9AD725B2A022BC6005B9B5B /* LaunchScreen.storyboard in Resources */,
-				C9AD72582A022BC6005B9B5B /* Assets.xcassets in Resources */,
+				C9AD726C2A023B4E005B9B5B /* Assets.xcassets in Resources */,
 				C9AD72562A022BC4005B9B5B /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -138,9 +176,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C9AD72532A022BC4005B9B5B /* ViewController.swift in Sources */,
+				C9AD72672A022C7B005B9B5B /* LoginViewController.swift in Sources */,
 				C9AD724F2A022BC4005B9B5B /* AppDelegate.swift in Sources */,
 				C9AD72512A022BC4005B9B5B /* SceneDelegate.swift in Sources */,
+				C9AD726A2A023416005B9B5B /* Extensions.swift in Sources */,
+				C9AD726E2A02443D005B9B5B /* SignUpViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
