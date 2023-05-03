@@ -15,6 +15,8 @@
 		C9AD726A2A023416005B9B5B /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9AD72692A023416005B9B5B /* Extensions.swift */; };
 		C9AD726C2A023B4E005B9B5B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C9AD726B2A023B4E005B9B5B /* Assets.xcassets */; };
 		C9AD726E2A02443D005B9B5B /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9AD726D2A02443D005B9B5B /* SignUpViewController.swift */; };
+		C9AD72702A024B75005B9B5B /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9AD726F2A024B75005B9B5B /* User.swift */; };
+		C9AD72722A024FF3005B9B5B /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9AD72712A024FF3005B9B5B /* LoginView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,6 +30,8 @@
 		C9AD72692A023416005B9B5B /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		C9AD726B2A023B4E005B9B5B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = ../../../Downloads/Assets.xcassets; sourceTree = "<group>"; };
 		C9AD726D2A02443D005B9B5B /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
+		C9AD726F2A024B75005B9B5B /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		C9AD72712A024FF3005B9B5B /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -86,6 +90,7 @@
 		C9AD72642A022C3D005B9B5B /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				C9AD72712A024FF3005B9B5B /* LoginView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -93,6 +98,7 @@
 		C9AD72652A022C41005B9B5B /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				C9AD726F2A024B75005B9B5B /* User.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -177,7 +183,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				C9AD72672A022C7B005B9B5B /* LoginViewController.swift in Sources */,
+				C9AD72722A024FF3005B9B5B /* LoginView.swift in Sources */,
 				C9AD724F2A022BC4005B9B5B /* AppDelegate.swift in Sources */,
+				C9AD72702A024B75005B9B5B /* User.swift in Sources */,
 				C9AD72512A022BC4005B9B5B /* SceneDelegate.swift in Sources */,
 				C9AD726A2A023416005B9B5B /* Extensions.swift in Sources */,
 				C9AD726E2A02443D005B9B5B /* SignUpViewController.swift in Sources */,
