@@ -9,6 +9,8 @@ import UIKit
 
 class LoginView: UIView {
     
+    weak var delegate: ViewButtonDelegate?
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupUI()
@@ -73,7 +75,12 @@ class LoginView: UIView {
     
     func setupUI(){
         self.backgroundColor = .white
+        layoutViews()
         
+        dontHaveAccountButton.addTarget(self, action: #selector(accountButtonTapped), for: .touchUpInside)
+    }
+    
+    func layoutViews(){
         let stackview = UIStackView(arrangedSubviews: [emailTextField,passwordTextField,loginButton])
         self.addSubview(stackview)
         self.addSubview(logoContainerView)
@@ -93,4 +100,12 @@ class LoginView: UIView {
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.resignFirstResponder()
     }
+    
+    @objc func accountButtonTapped(){
+        delegate?.didTapButton()
+    }
+}
+
+protocol ViewButtonDelegate: AnyObject{
+    func didTapButton()
 }
