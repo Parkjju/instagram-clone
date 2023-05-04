@@ -1,18 +1,18 @@
 //
-//  SignUpViewController.swift
+//  AuthNavigationViewController.swift
 //  instagram
 //
-//  Created by 박경준 on 2023/05/03.
+//  Created by 박경준 on 2023/05/04.
 //
 
 import UIKit
 
-class SignUpViewController: UIViewController {
+class AuthNavigationViewController: UINavigationController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        
+        // Do any additional setup after loading the view.
     }
     
 
