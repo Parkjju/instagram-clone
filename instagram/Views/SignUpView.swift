@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Firebase
 
 class SignUpView: UIView {
     let profileImageContainerView: UIView = {
@@ -28,7 +29,7 @@ class SignUpView: UIView {
         tf.backgroundColor = UIColor(white:0, alpha:0.03)
         tf.borderStyle = .roundedRect
         tf.font = UIFont.systemFont(ofSize: 14)
-        
+        tf.addTarget(self, action: #selector(formValidation), for: .editingChanged)
         return tf
     }()
     
@@ -58,7 +59,8 @@ class SignUpView: UIView {
         tf.backgroundColor = UIColor(white:0, alpha:0.03)
         tf.borderStyle = .roundedRect
         tf.font = UIFont.systemFont(ofSize: 14)
-        
+        tf.isSecureTextEntry = true
+        tf.addTarget(self, action: #selector(formValidation), for: .editingChanged)
         return tf
     }()
     
@@ -69,7 +71,9 @@ class SignUpView: UIView {
         let attrString = NSMutableAttributedString(string:"가입하기", attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 14), NSAttributedString.Key.foregroundColor: UIColor.white])
         btn.setAttributedTitle(attrString, for: .normal)
         btn.layer.cornerRadius = 5
-        
+        btn.isEnabled = false
+        btn.layer.opacity = 0.5
+        btn.addTarget(self, action: #selector(handleSignUp), for: .touchUpInside)
         return btn
     }()
     
@@ -104,6 +108,35 @@ class SignUpView: UIView {
         signupButton.anchor(top: passwordTextField.bottomAnchor, left: self.leftAnchor, right: self.rightAnchor, bottom: nil, paddingTop: 10, paddingLeft: 30, paddingRight: 30, paddingBottom: 0, width: 0, height: 40)
     }
     
+    @objc func handleSignUp(){
+        guard let email = emailTextField.text else { return }
+        guard let password = passwordTextField.text else { return }
+        
+        Auth.auth().createUser(withEmail: email, password: password){(user, error) in
+            
+            if let error = error {
+                print(error.localizedDescription)
+            }
+            
+            print("created user: \(user)")
+        }
+        print(email)
+    }
+    
+    @objc func formValidation(){
+        guard emailTextField.hasText, passwordTextField.hasText else {
+            signupButton.isEnabled = false
+            signupButton.layer.opacity = 0.5
+            return
+        }
+        
+        signupButton.isEnabled = true
+        signupButton.layer.opacity = 1
+    }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.endEditing(true)
+    }
     
 
 }
