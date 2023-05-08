@@ -32,7 +32,7 @@ class SignUpView: UIView {
         return tf
     }()
     
-    let fullnameTextField: UITextField = {
+    let usernameTextField: UITextField = {
         let tf = UITextField()
         tf.placeholder = "이름"
         tf.backgroundColor = UIColor(white:0, alpha:0.03)
@@ -44,7 +44,7 @@ class SignUpView: UIView {
     
     let fullnameTextField: UITextField = {
         let tf = UITextField()
-        tf.placeholder = "이름"
+        tf.placeholder = "유저명"
         tf.backgroundColor = UIColor(white:0, alpha:0.03)
         tf.borderStyle = .roundedRect
         tf.font = UIFont.systemFont(ofSize: 14)
@@ -52,14 +52,25 @@ class SignUpView: UIView {
         return tf
     }()
     
-    let fullnameTextField: UITextField = {
+    let passwordTextField: UITextField = {
         let tf = UITextField()
-        tf.placeholder = "이름"
+        tf.placeholder = "패스워드"
         tf.backgroundColor = UIColor(white:0, alpha:0.03)
         tf.borderStyle = .roundedRect
         tf.font = UIFont.systemFont(ofSize: 14)
         
         return tf
+    }()
+    
+    let signupButton: UIButton = {
+        let btn = UIButton(type:.system)
+        btn.backgroundColor = .systemBlue
+        
+        let attrString = NSMutableAttributedString(string:"가입하기", attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 14), NSAttributedString.Key.foregroundColor: UIColor.white])
+        btn.setAttributedTitle(attrString, for: .normal)
+        btn.layer.cornerRadius = 5
+        
+        return btn
     }()
     
     override init(frame: CGRect) {
@@ -73,10 +84,26 @@ class SignUpView: UIView {
     }
     
     func setupUI(){
-        self.addSubview(profileImageContainerView)
         self.backgroundColor = .white
+        layoutViews()
+    }
+    
+    func layoutViews(){
+        self.addSubview(profileImageContainerView)
+        self.addSubview(emailTextField)
+        self.addSubview(fullnameTextField)
+        self.addSubview(usernameTextField)
+        self.addSubview(passwordTextField)
+        self.addSubview(signupButton)
         
         profileImageContainerView.anchor(top: self.topAnchor, left: self.leftAnchor, right: self.rightAnchor, bottom: nil, paddingTop: 160, paddingLeft: 20, paddingRight: 20, paddingBottom: 0, width: 0, height: 0)
+        emailTextField.anchor(top: profileImageContainerView.bottomAnchor, left: self.leftAnchor, right: self.rightAnchor, bottom: nil, paddingTop: 60, paddingLeft: 30, paddingRight: 30, paddingBottom: 0, width: 0, height: 40)
+        fullnameTextField.anchor(top: emailTextField.bottomAnchor, left: self.leftAnchor, right: self.rightAnchor, bottom: nil, paddingTop: 10, paddingLeft: 30, paddingRight: 30, paddingBottom: 0, width: 0, height: 40)
+        usernameTextField.anchor(top: fullnameTextField.bottomAnchor, left: self.leftAnchor, right: self.rightAnchor, bottom: nil, paddingTop: 10, paddingLeft: 30, paddingRight: 30, paddingBottom: 0, width: 0, height: 40)
+        passwordTextField.anchor(top: usernameTextField.bottomAnchor, left: self.leftAnchor, right: self.rightAnchor, bottom: nil, paddingTop: 10, paddingLeft: 30, paddingRight: 30, paddingBottom: 0, width: 0, height: 40)
+        signupButton.anchor(top: passwordTextField.bottomAnchor, left: self.leftAnchor, right: self.rightAnchor, bottom: nil, paddingTop: 10, paddingLeft: 30, paddingRight: 30, paddingBottom: 0, width: 0, height: 40)
     }
+    
+    
 
 }
