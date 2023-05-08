@@ -27,7 +27,7 @@ class LoginView: UIView {
         tf.backgroundColor = UIColor(white:0, alpha:0.03)
         tf.borderStyle = .roundedRect
         tf.font = UIFont.systemFont(ofSize: 14)
-        
+        tf.addTarget(self, action: #selector(formValidation), for: .editingChanged)
         return tf
     }()
     
@@ -37,7 +37,8 @@ class LoginView: UIView {
         tf.backgroundColor = UIColor(white:0, alpha:0.03)
         tf.borderStyle = .roundedRect
         tf.font = UIFont.systemFont(ofSize: 14)
-        
+        tf.isSecureTextEntry = true
+        tf.addTarget(self, action: #selector(formValidation), for: .editingChanged)
         return tf
     }()
     
@@ -48,6 +49,8 @@ class LoginView: UIView {
         btn.layer.cornerRadius = 5
         btn.setTitle("로그인", for: .normal)
         btn.setTitleColor(.white, for: .normal)
+        btn.isEnabled = false
+        btn.layer.opacity = 0.5
         return btn
     }()
     
@@ -98,11 +101,22 @@ class LoginView: UIView {
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        self.resignFirstResponder()
+        self.endEditing(true)
     }
     
     @objc func accountButtonTapped(){
         delegate?.didTapButton()
+    }
+    
+    @objc func formValidation(){
+        guard emailTextField.hasText, passwordTextField.hasText else {
+            loginButton.isEnabled = false
+            loginButton.layer.opacity = 0.5
+            return
+        }
+        
+        loginButton.isEnabled = true
+        loginButton.layer.opacity = 1
     }
 }
 
