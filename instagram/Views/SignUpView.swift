@@ -20,7 +20,7 @@ class SignUpView: UIView {
     weak var pickerDelegate: PickerDelegate?
     
     // MARK: setup UI components
-    // imageView 레이아웃 스타일링 필요 - 
+    // imageView 레이아웃 스타일링 필요 -
     let profileImageContainerView: UIView = {
         let view = UIView()
         let avatarImageView = UIImageView(image: UIImage(systemName: "person")?.withRenderingMode(.alwaysTemplate))
@@ -30,9 +30,10 @@ class SignUpView: UIView {
 
         avatarImageView.contentMode = .scaleAspectFill
         
-        avatarImageView.anchor(top: nil, left: nil, right: nil, bottom: nil, paddingTop: 0, paddingLeft: 0, paddingRight: 0, paddingBottom: 0, width: 40, height: 40)
-        avatarImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         
+        avatarImageView.anchor(top: nil, left: nil, right: nil, bottom: nil, paddingTop: 0, paddingLeft: 0, paddingRight: 0, paddingBottom: 0, width: 100, height: 100)
+        avatarImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        avatarImageView.clipsToBounds = true
         return view
     }()
     
@@ -115,8 +116,9 @@ class SignUpView: UIView {
         self.addSubview(passwordTextField)
         self.addSubview(signupButton)
         
-        profileImageContainerView.anchor(top: self.topAnchor, left: self.leftAnchor, right: self.rightAnchor, bottom: nil, paddingTop: 160, paddingLeft: 20, paddingRight: 20, paddingBottom: 0, width: 0, height: 40)
-        emailTextField.anchor(top: profileImageContainerView.bottomAnchor, left: self.leftAnchor, right: self.rightAnchor, bottom: nil, paddingTop: 60, paddingLeft: 30, paddingRight: 30, paddingBottom: 0, width: 0, height: 40)
+        profileImageContainerView.anchor(top: self.topAnchor, left: self.leftAnchor, right: self.rightAnchor, bottom: nil, paddingTop: 160, paddingLeft: 20, paddingRight: 20, paddingBottom: 0, width: 0, height: 100)
+        
+        emailTextField.anchor(top: profileImageContainerView.bottomAnchor, left: self.leftAnchor, right: self.rightAnchor, bottom: nil, paddingTop: 10, paddingLeft: 30, paddingRight: 30, paddingBottom: 0, width: 0, height: 40)
         fullnameTextField.anchor(top: emailTextField.bottomAnchor, left: self.leftAnchor, right: self.rightAnchor, bottom: nil, paddingTop: 10, paddingLeft: 30, paddingRight: 30, paddingBottom: 0, width: 0, height: 40)
         usernameTextField.anchor(top: fullnameTextField.bottomAnchor, left: self.leftAnchor, right: self.rightAnchor, bottom: nil, paddingTop: 10, paddingLeft: 30, paddingRight: 30, paddingBottom: 0, width: 0, height: 40)
         passwordTextField.anchor(top: usernameTextField.bottomAnchor, left: self.leftAnchor, right: self.rightAnchor, bottom: nil, paddingTop: 10, paddingLeft: 30, paddingRight: 30, paddingBottom: 0, width: 0, height: 40)
@@ -151,7 +153,6 @@ class SignUpView: UIView {
     }
     
     @objc func handleTapGesture(){
-        print("?")
         var configuration = PHPickerConfiguration()
         configuration.selectionLimit = 0
         configuration.filter = .any(of: [.images])
