@@ -11,7 +11,11 @@ import PhotosUI
 
 class SignUpView: UIView {
     
-    weak var delegate: GestureDelegate?
+    weak var delegate: GestureDelegate?{
+        didSet{
+            delegate?.setupGesture(gestureTarget: profileImageContainerView, action: #selector(handleTapGesture))
+        }
+    }
     
     // MARK: setup UI components
     let profileImageContainerView: UIView = {
@@ -90,8 +94,8 @@ class SignUpView: UIView {
     }
     
     required init?(coder aDecoder: NSCoder) {
-      super.init(coder: aDecoder)
-      setupUI()
+        super.init(coder: aDecoder)
+        setupUI()
     }
     
     // MARK: setupUI & layouts
@@ -143,6 +147,10 @@ class SignUpView: UIView {
         signupButton.layer.opacity = 1
     }
     
+    @objc func handleTapGesture(){
+        print("hi")
+    }
+    
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.endEditing(true)
     }
@@ -161,5 +169,5 @@ extension SignUpView: PHPickerViewControllerDelegate{
 }
 
 protocol GestureDelegate: AnyObject{
-    func setupGesture(target: UIView, action: Selector?)
+    func setupGesture(gestureTarget: UIView, action: Selector)
 }
