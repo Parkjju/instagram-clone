@@ -7,8 +7,13 @@
 
 import UIKit
 import Firebase
+import PhotosUI
 
 class SignUpView: UIView {
+    
+    weak var delegate: GestureDelegate?
+    
+    // MARK: setup UI components
     let profileImageContainerView: UIView = {
         let view = UIView()
         let avatarImageView = UIImageView(image: UIImage(systemName: "person")?.withRenderingMode(.alwaysTemplate))
@@ -20,6 +25,7 @@ class SignUpView: UIView {
         
         avatarImageView.anchor(top: nil, left: nil, right: nil, bottom: nil, paddingTop: 0, paddingLeft: 0, paddingRight: 0, paddingBottom: 0, width: 40, height: 40)
         avatarImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        
         return view
     }()
     
@@ -77,6 +83,7 @@ class SignUpView: UIView {
         return btn
     }()
     
+    // MARK: default method
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupUI()
@@ -87,6 +94,7 @@ class SignUpView: UIView {
       setupUI()
     }
     
+    // MARK: setupUI & layouts
     func setupUI(){
         self.backgroundColor = .white
         layoutViews()
@@ -108,6 +116,7 @@ class SignUpView: UIView {
         signupButton.anchor(top: passwordTextField.bottomAnchor, left: self.leftAnchor, right: self.rightAnchor, bottom: nil, paddingTop: 10, paddingLeft: 30, paddingRight: 30, paddingBottom: 0, width: 0, height: 40)
     }
     
+    // MARK: Handlers
     @objc func handleSignUp(){
         guard let email = emailTextField.text else { return }
         guard let password = passwordTextField.text else { return }
@@ -138,5 +147,19 @@ class SignUpView: UIView {
         self.endEditing(true)
     }
     
+    // MARK: Util functions
+    
+}
 
+extension SignUpView: PHPickerViewControllerDelegate{
+    func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
+        
+        picker.dismiss(animated: true)
+        
+        let itemProvider = results.first?.itemProvider
+    }
+}
+
+protocol GestureDelegate: AnyObject{
+    func setupGesture(target: UIView, action: Selector?)
 }
