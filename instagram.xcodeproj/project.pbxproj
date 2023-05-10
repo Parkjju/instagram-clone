@@ -55,6 +55,22 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		88D98EE22A0B56FE002804A9 /* Auth */ = {
+			isa = PBXGroup;
+			children = (
+				C9AD72712A024FF3005B9B5B /* LoginView.swift */,
+				C9AD72782A034AAA005B9B5B /* SignUpView.swift */,
+			);
+			path = Auth;
+			sourceTree = "<group>";
+		};
+		88D98EE32A0B570D002804A9 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
 		C9AD72422A022BC4005B9B5B = {
 			isa = PBXGroup;
 			children = (
@@ -100,8 +116,8 @@
 		C9AD72642A022C3D005B9B5B /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				C9AD72712A024FF3005B9B5B /* LoginView.swift */,
-				C9AD72782A034AAA005B9B5B /* SignUpView.swift */,
+				88D98EE32A0B570D002804A9 /* Utils */,
+				88D98EE22A0B56FE002804A9 /* Auth */,
 			);
 			path = Views;
 			sourceTree = "<group>";
