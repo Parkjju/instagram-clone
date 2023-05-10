@@ -33,7 +33,12 @@ class SignUpView: UIView {
         
         avatarImageView.anchor(top: nil, left: nil, right: nil, bottom: nil, paddingTop: 0, paddingLeft: 0, paddingRight: 0, paddingBottom: 0, width: 100, height: 100)
         avatarImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        avatarImageView.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
         avatarImageView.clipsToBounds = true
+        
+        view.layer.borderWidth = 2
+        view.layer.borderColor = UIColor.lightGray.cgColor
+        view.layer.cornerRadius = 60
         return view
     }()
     
@@ -116,7 +121,8 @@ class SignUpView: UIView {
         self.addSubview(passwordTextField)
         self.addSubview(signupButton)
         
-        profileImageContainerView.anchor(top: self.topAnchor, left: self.leftAnchor, right: self.rightAnchor, bottom: nil, paddingTop: 160, paddingLeft: 20, paddingRight: 20, paddingBottom: 0, width: 0, height: 100)
+        profileImageContainerView.anchor(top: self.topAnchor, left: nil, right: nil, bottom: nil, paddingTop: 160, paddingLeft: 0, paddingRight: 0, paddingBottom: 0, width: 120, height: 120)
+        profileImageContainerView.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
         
         emailTextField.anchor(top: profileImageContainerView.bottomAnchor, left: self.leftAnchor, right: self.rightAnchor, bottom: nil, paddingTop: 10, paddingLeft: 30, paddingRight: 30, paddingBottom: 0, width: 0, height: 40)
         fullnameTextField.anchor(top: emailTextField.bottomAnchor, left: self.leftAnchor, right: self.rightAnchor, bottom: nil, paddingTop: 10, paddingLeft: 30, paddingRight: 30, paddingBottom: 0, width: 0, height: 40)
@@ -154,7 +160,7 @@ class SignUpView: UIView {
     
     @objc func handleTapGesture(){
         var configuration = PHPickerConfiguration()
-        configuration.selectionLimit = 0
+        configuration.selectionLimit = 1
         configuration.filter = .any(of: [.images])
         let picker = PHPickerViewController(configuration: configuration)
         

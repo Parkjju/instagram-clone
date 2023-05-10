@@ -49,6 +49,8 @@ extension SignUpViewController: PHPickerViewControllerDelegate{
         let imageView = signupView.profileImageContainerView.subviews.first as! UIImageView
         // 코너 부여
         imageView.layer.cornerRadius = 50
+        imageView.layer.borderWidth = 2
+        imageView.layer.borderColor = UIColor.lightGray.cgColor
         
         picker.dismiss(animated: true)
         
