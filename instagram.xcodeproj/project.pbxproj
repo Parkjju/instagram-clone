@@ -12,7 +12,8 @@
 		88D87EE02A08710C008F1F29 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 88D87EDF2A08710C008F1F29 /* FirebaseAuth */; };
 		88D87EE22A08710C008F1F29 /* FirebaseDatabase in Frameworks */ = {isa = PBXBuildFile; productRef = 88D87EE12A08710C008F1F29 /* FirebaseDatabase */; };
 		88D87EE42A08710C008F1F29 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 88D87EE32A08710C008F1F29 /* FirebaseStorage */; };
-		88D98EE62A0B596E002804A9 /* CustomPHPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88D98EE52A0B596E002804A9 /* CustomPHPickerViewController.swift */; };
+		88D98EE92A0B5F28002804A9 /* CustomPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88D98EE82A0B5F28002804A9 /* CustomPickerViewController.swift */; };
+		88D98EEB2A0B6234002804A9 /* CustomPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88D98EEA2A0B6234002804A9 /* CustomPickerView.swift */; };
 		C9AD724F2A022BC4005B9B5B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9AD724E2A022BC4005B9B5B /* AppDelegate.swift */; };
 		C9AD72512A022BC4005B9B5B /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9AD72502A022BC4005B9B5B /* SceneDelegate.swift */; };
 		C9AD72562A022BC4005B9B5B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C9AD72542A022BC4005B9B5B /* Main.storyboard */; };
@@ -28,7 +29,8 @@
 /* Begin PBXFileReference section */
 		88D87ED92A0866BF008F1F29 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = ../../../Downloads/Assets.xcassets; sourceTree = "<group>"; };
 		88D87EDB2A086BCB008F1F29 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
-		88D98EE52A0B596E002804A9 /* CustomPHPickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomPHPickerViewController.swift; sourceTree = "<group>"; };
+		88D98EE82A0B5F28002804A9 /* CustomPickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomPickerViewController.swift; sourceTree = "<group>"; };
+		88D98EEA2A0B6234002804A9 /* CustomPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomPickerView.swift; sourceTree = "<group>"; };
 		C9AD724B2A022BC4005B9B5B /* instagram.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = instagram.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C9AD724E2A022BC4005B9B5B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C9AD72502A022BC4005B9B5B /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -69,14 +71,15 @@
 		88D98EE32A0B570D002804A9 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				88D98EEA2A0B6234002804A9 /* CustomPickerView.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
 		};
-		88D98EE42A0B5951002804A9 /* Utils */ = {
+		88D98EE72A0B5EEA002804A9 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
-				88D98EE52A0B596E002804A9 /* CustomPHPickerViewController.swift */,
+				88D98EE82A0B5F28002804A9 /* CustomPickerViewController.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -118,7 +121,7 @@
 		C9AD72622A022C30005B9B5B /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				88D98EE42A0B5951002804A9 /* Utils */,
+				88D98EE72A0B5EEA002804A9 /* Utils */,
 				C9AD727C2A0350E7005B9B5B /* Auth */,
 			);
 			path = Controllers;
@@ -239,12 +242,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				C9AD72672A022C7B005B9B5B /* LoginViewController.swift in Sources */,
+				88D98EEB2A0B6234002804A9 /* CustomPickerView.swift in Sources */,
 				C9AD72722A024FF3005B9B5B /* LoginView.swift in Sources */,
 				C9AD724F2A022BC4005B9B5B /* AppDelegate.swift in Sources */,
 				C9AD72702A024B75005B9B5B /* User.swift in Sources */,
+				88D98EE92A0B5F28002804A9 /* CustomPickerViewController.swift in Sources */,
 				C9AD72792A034AAA005B9B5B /* SignUpView.swift in Sources */,
 				C9AD72512A022BC4005B9B5B /* SceneDelegate.swift in Sources */,
-				88D98EE62A0B596E002804A9 /* CustomPHPickerViewController.swift in Sources */,
 				C9AD726A2A023416005B9B5B /* Extensions.swift in Sources */,
 				C9AD726E2A02443D005B9B5B /* SignUpViewController.swift in Sources */,
 			);
