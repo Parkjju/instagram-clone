@@ -104,7 +104,6 @@ class SignUpView: UIView {
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        setupUI()
     }
     
     // MARK: setupUI & layouts
@@ -159,12 +158,7 @@ class SignUpView: UIView {
     }
     
     @objc func handleTapGesture(){
-//        var configuration = PHPickerConfiguration()
-//        configuration.selectionLimit = 1
-//        configuration.filter = .any(of: [.images])
-        let picker = CustomPHPickerViewController()
-
-        
+        let picker = CustomPickerViewController()
         pickerDelegate?.setupPickerView(picker: picker)
     }
     
@@ -181,5 +175,5 @@ protocol GestureDelegate: AnyObject{
 }
 
 protocol PickerDelegate: AnyObject{
-    func setupPickerView(picker: CustomPHPickerViewController)
+    func setupPickerView(picker: CustomPickerViewController)
 }
