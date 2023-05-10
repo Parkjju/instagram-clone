@@ -34,7 +34,7 @@ extension SignUpViewController: GestureDelegate{
 }
 
 extension SignUpViewController: PickerDelegate{
-    func setupPickerView(picker: PHPickerViewController) {
+    func setupPickerView(picker: CustomPHPickerViewController) {
         picker.delegate = self
         present(picker, animated: true)
     }

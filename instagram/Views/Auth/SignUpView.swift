@@ -159,10 +159,11 @@ class SignUpView: UIView {
     }
     
     @objc func handleTapGesture(){
-        var configuration = PHPickerConfiguration()
-        configuration.selectionLimit = 1
-        configuration.filter = .any(of: [.images])
-        let picker = PHPickerViewController(configuration: configuration)
+//        var configuration = PHPickerConfiguration()
+//        configuration.selectionLimit = 1
+//        configuration.filter = .any(of: [.images])
+        let picker = CustomPHPickerViewController()
+
         
         pickerDelegate?.setupPickerView(picker: picker)
     }
@@ -180,5 +181,5 @@ protocol GestureDelegate: AnyObject{
 }
 
 protocol PickerDelegate: AnyObject{
-    func setupPickerView(picker: PHPickerViewController)
+    func setupPickerView(picker: CustomPHPickerViewController)
 }
