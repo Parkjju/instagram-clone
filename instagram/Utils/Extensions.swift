@@ -125,3 +125,32 @@ extension UIImageView{
         self.addGestureRecognizer(pinchGesture)
     }
 }
+
+// MARK: 이미지 자르기 함수
+// 뷰의 가로 - 세로를 기준으로 이미지를 자르
+func cropImage(sourceImage: UIImage, view: UIView) -> UIImage{
+
+    // Determines the x,y coordinate of a centered
+    // sideLength by sideLength square
+    let sourceSize = view.frame.size
+    let xOffset = sourceSize.width / 2
+    let yOffset = sourceSize.height / 2
+    print(xOffset)
+
+    // The cropRect is the rect of the image to keep,
+    // in this case centered
+    let cropRect = CGRect(
+        x: xOffset,
+        y: yOffset,
+        width: sourceSize.width,
+        height:sourceSize.height
+    ).integral
+
+    // Center crop the image
+    let sourceCGImage = sourceImage.cgImage!
+    let croppedCGImage = sourceCGImage.cropping(
+        to: cropRect
+    )!
+    
+    return UIImage(cgImage: croppedCGImage)
+}
