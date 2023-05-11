@@ -112,7 +112,10 @@ extension UIColor{
 }
 
 // MARK: ImageView extension - 핀치 후 이미지 확대
+var initialPoint: CGPoint?
+
 extension UIImageView{
+    
     @objc func startZooming(_ sender: UIPinchGestureRecognizer){
         
         if(sender.view!.transform.a > 0.6){
@@ -130,8 +133,21 @@ extension UIImageView{
     }
     
     @objc func startDragging(_ sender: UIPanGestureRecognizer){
+        // 이동량을 더하는 형태 -> 계속 누적되어 목표값을 넘어서게됨
+        // 직전의 translate값을 저장
+        // 변화하는 상태값을 계속 트래킹하며 이미지뷰 origin위치를 변경해줘야함
         
-        sender.view?.frame.origin = sender.translation(in: sender.view)
+        if(sender.view!.transform.a > 1 ){
+            sender.view!.frame.origin.x += sender.translation(in: sender.view).x
+            sender.view!.frame.origin.y += sender.translation(in: sender.view).y
+            
+            sender.setTranslation(.zero, in: sender.view)
+            
+        }else{
+            sender.view?.frame.origin = sender.translation(in: sender.view)
+        }
+
+        
         
         if(sender.state == .ended){
             checkImageOriginIsZero(sender)
@@ -139,14 +155,27 @@ extension UIImageView{
     }
     
     func checkImageOriginIsZero(_ sender: UIPanGestureRecognizer){
-        print(sender.view!.frame.origin.y)
-        // 스케일링 되어있는 경우와 그렇지 않은 경우를 구분해서 구현해야함
-        if(sender.view!.frame.origin.x > 0 || sender.view!.frame.origin.x < 0 || sender.view!.frame.origin.y > 0){
-            UIView.animate(withDuration: 0.3) {
-                sender.view?.frame.origin.x = 0
-                sender.view?.frame.origin.y = 0
+        if(sender.view!.transform.a != 1){
+            
+            if(sender.view!.frame.origin.x > 0){
+                UIView.animate(withDuration: 0.3) {
+                    sender.view?.frame.origin.x = 0
+                }
+            }else if(sender.view!.frame.origin.y > 0 ){
+                UIView.animate(withDuration: 0.3) {
+                    sender.view?.frame.origin.y = 0
+                }
+            }
+        }else{
+            if(sender.view!.frame.origin.x > 0 || sender.view!.frame.origin.x < 0 || sender.view!.frame.origin.y > 0){
+                UIView.animate(withDuration: 0.3) {
+                    sender.view?.frame.origin.x = 0
+                    sender.view?.frame.origin.y = 0
+                }
             }
         }
+        // 스케일링 되어있는 경우와 그렇지 않은 경우를 구분해서 구현해야함
+
     }
     
     func checkImageOriginIsZero(_ sender: UIPinchGestureRecognizer){
