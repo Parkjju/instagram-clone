@@ -41,9 +41,9 @@ class CustomPickerViewController: UIViewController {
                 let imageView = customPickerView.previewImageContainerView.subviews.first as! UIImageView
                 
                 // 핀치 이벤트 등록
-                // scale은 고정하되 이미지가 다른 영역을 침범하지 않아야함
-                // 1. containerView height값이 바뀌는지
+                // scale은 고정하되 이미지가 다른 영역을 침범하지 않아야함 - clipsToBounds처리
                 imageView.enableZoom()
+                imageView.enableDrag()
                 
                 
                 DispatchQueue.main.async {

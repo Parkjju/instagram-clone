@@ -38,7 +38,6 @@ class CustomPickerView: UIView {
     
     let previewImageContainerView: UIView = {
         let view = UIView()
-        view.backgroundColor = .brown
         
         let preImageView = UIImageView()
         view.addSubview(preImageView)

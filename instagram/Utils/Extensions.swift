@@ -129,6 +129,26 @@ extension UIImageView{
         
     }
     
+    @objc func startDragging(_ sender: UIPanGestureRecognizer){
+        
+        sender.view?.frame.origin = sender.translation(in: sender.view)
+        
+        if(sender.state == .ended){
+            checkImageOriginIsZero(sender)
+        }
+    }
+    
+    func checkImageOriginIsZero(_ sender: UIPanGestureRecognizer){
+        print(sender.view!.frame.origin.y)
+        // 스케일링 되어있는 경우와 그렇지 않은 경우를 구분해서 구현해야함
+        if(sender.view!.frame.origin.x > 0 || sender.view!.frame.origin.x < 0 || sender.view!.frame.origin.y > 0){
+            UIView.animate(withDuration: 0.3) {
+                sender.view?.frame.origin.x = 0
+                sender.view?.frame.origin.y = 0
+            }
+        }
+    }
+    
     func checkImageOriginIsZero(_ sender: UIPinchGestureRecognizer){
         if(sender.view!.frame.origin.x > 0 || sender.view!.frame.origin.y > 0){
             let imageView = sender.view as! UIImageView
@@ -144,9 +164,16 @@ extension UIImageView{
     }
     
     func enableZoom(){
+        
         let pinchGesture = UIPinchGestureRecognizer(target: self, action: #selector(startZooming))
         self.isUserInteractionEnabled = true
         self.addGestureRecognizer(pinchGesture)
+    }
+    
+    func enableDrag(){
+        let panGesture = UIPanGestureRecognizer(target: self, action: #selector(startDragging))
+        self.isUserInteractionEnabled = true
+        self.addGestureRecognizer(panGesture)
     }
 }
 
@@ -157,8 +184,6 @@ func cropImage(sourceImage: UIImage, view: UIView, imageView: UIImageView) -> UI
     // Determines the x,y coordinate of a centered
     // sideLength by sideLength square
     let sourceSize = view.frame.size
-    let xOffset = sourceSize.width / 2
-    let yOffset = sourceSize.height / 2
 
     // The cropRect is the rect of the image to keep,
     // in this case centered
