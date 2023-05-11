@@ -114,11 +114,35 @@ extension UIColor{
 // MARK: ImageView extension - 핀치 후 이미지 확대
 extension UIImageView{
     @objc func startZooming(_ sender: UIPinchGestureRecognizer){
-        let scaleResult = sender.view?.transform.scaledBy(x: sender.scale, y: sender.scale)
-        guard let scale = scaleResult, scale.a > 1, scale.d > 1 else { return }
-        sender.view?.transform = scale
-        sender.scale = 1
+        
+        if(sender.view!.transform.a > 0.6){
+            let scaleResult = sender.view?.transform.scaledBy(x: sender.scale, y: sender.scale)
+            
+            guard let scale = scaleResult else { return }
+            sender.view?.transform = scale
+            sender.scale = 1
+        }
+        
+        if(sender.state == .ended){
+            checkImageOriginIsZero(sender)
+        }
+        
     }
+    
+    func checkImageOriginIsZero(_ sender: UIPinchGestureRecognizer){
+        if(sender.view!.frame.origin.x > 0 || sender.view!.frame.origin.y > 0){
+            let imageView = sender.view as! UIImageView
+            UIView.animate(withDuration: 0.3) {
+                sender.view!.transform.a = 1
+                sender.view!.transform.d = 1
+                
+                imageView.image = imageView.image?.scalePreservingAspectRatio(targetSize: CGSize(width: sender.view!.superview!.frame.width, height: sender.view!.superview!.frame.width), autoResize: true)
+            }
+            
+            
+        }
+    }
+    
     func enableZoom(){
         let pinchGesture = UIPinchGestureRecognizer(target: self, action: #selector(startZooming))
         self.isUserInteractionEnabled = true
@@ -128,21 +152,20 @@ extension UIImageView{
 
 // MARK: 이미지 자르기 함수
 // 뷰의 가로 - 세로를 기준으로 이미지를 자르
-func cropImage(sourceImage: UIImage, view: UIView) -> UIImage{
+func cropImage(sourceImage: UIImage, view: UIView, imageView: UIImageView) -> UIImage{
 
     // Determines the x,y coordinate of a centered
     // sideLength by sideLength square
     let sourceSize = view.frame.size
     let xOffset = sourceSize.width / 2
     let yOffset = sourceSize.height / 2
-    print(xOffset)
 
     // The cropRect is the rect of the image to keep,
     // in this case centered
     let cropRect = CGRect(
-        x: xOffset,
-        y: yOffset,
-        width: sourceSize.width,
+        x: 0,
+        y: 0,
+        width:  sourceSize.width,
         height:sourceSize.height
     ).integral
 
