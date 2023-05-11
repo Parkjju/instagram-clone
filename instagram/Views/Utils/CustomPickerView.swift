@@ -113,7 +113,8 @@ class CustomPickerView: UIView {
         // 5. 코너 부여 및 이미지 리사이징 - 해상도 깨짐 방지
         
         signupViewProfileImageView.layer.cornerRadius = 50
-        signupViewProfileImageView.image = cropImage(sourceImage: imageView.image!, view: previewImageContainerView).scalePreservingAspectRatio(targetSize: CGSize(width: 100, height: 100), autoResize: false)
+        signupViewProfileImageView.image = cropImage(sourceImage: imageView.image!, view: previewImageContainerView, imageView: signupViewProfileImageView).scalePreservingAspectRatio(targetSize: CGSize(width: 100, height: 100), autoResize: false)
+        print(cropImage(sourceImage: imageView.image!, view: previewImageContainerView, imageView: signupViewProfileImageView).scalePreservingAspectRatio(targetSize: CGSize(width: 100, height: 100), autoResize: false))
         
         
         
