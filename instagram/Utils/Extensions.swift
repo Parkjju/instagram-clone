@@ -136,18 +136,14 @@ extension UIImageView{
         // 이동량을 더하는 형태 -> 계속 누적되어 목표값을 넘어서게됨
         // 직전의 translate값을 저장
         // 변화하는 상태값을 계속 트래킹하며 이미지뷰 origin위치를 변경해줘야함
-        
         if(sender.view!.transform.a > 1 ){
-            sender.view!.frame.origin.x += sender.translation(in: sender.view).x
-            sender.view!.frame.origin.y += sender.translation(in: sender.view).y
-            
+            sender.view!.center.x += sender.translation(in: sender.view).x
+            sender.view!.center.y += sender.translation(in: sender.view).y
+
             sender.setTranslation(.zero, in: sender.view)
-            
         }else{
             sender.view?.frame.origin = sender.translation(in: sender.view)
         }
-
-        
         
         if(sender.state == .ended){
             checkImageOriginIsZero(sender)
@@ -156,16 +152,34 @@ extension UIImageView{
     
     func checkImageOriginIsZero(_ sender: UIPanGestureRecognizer){
         if(sender.view!.transform.a != 1){
-            
+            // 프레임이 왼쪽경계보다 안쪽으로 당겨질때
             if(sender.view!.frame.origin.x > 0){
                 UIView.animate(withDuration: 0.3) {
-                    sender.view?.frame.origin.x = 0
-                }
-            }else if(sender.view!.frame.origin.y > 0 ){
-                UIView.animate(withDuration: 0.3) {
-                    sender.view?.frame.origin.y = 0
+                    sender.view!.center.x -= sender.view!.frame.origin.x
                 }
             }
+            
+            // 프레임이 위쪽경계보다 안쪽으로 당겨질때
+            if(sender.view!.frame.origin.y > 0  ){
+                UIView.animate(withDuration: 0.3) {
+                    sender.view!.center.y -= sender.view!.frame.origin.y
+                }
+            }
+            
+            // 프레임이 오른쪽 경계보다 안쪽으로 당겨질때 - 이미지 wrapper UIView 너비로 체크
+            if(sender.view!.frame.maxX < sender.view!.superview!.frame.width){
+                UIView.animate(withDuration: 0.3) {
+                    sender.view!.center.x += (sender.view!.superview!.frame.width - sender.view!.frame.maxX)
+                }
+            }
+            
+            // 프레임이 아래쪽 경계보다 안쪽으로 당겨질때 - 이미지 wrapper UIView 높이로 체크
+            if(sender.view!.frame.maxY < sender.view!.superview!.frame.height){
+                UIView.animate(withDuration: 0.3) {
+                    sender.view!.center.y += (sender.view!.superview!.frame.height - sender.view!.frame.maxY)
+                }
+            }
+            
         }else{
             if(sender.view!.frame.origin.x > 0 || sender.view!.frame.origin.x < 0 || sender.view!.frame.origin.y > 0){
                 UIView.animate(withDuration: 0.3) {
@@ -184,6 +198,9 @@ extension UIImageView{
             UIView.animate(withDuration: 0.3) {
                 sender.view!.transform.a = 1
                 sender.view!.transform.d = 1
+                
+                sender.view!.center.x = sender.view!.superview!.center.x
+                sender.view!.center.y = sender.view!.frame.height / 2
                 
                 imageView.image = imageView.image?.scalePreservingAspectRatio(targetSize: CGSize(width: sender.view!.superview!.frame.width, height: sender.view!.superview!.frame.width), autoResize: true)
             }
