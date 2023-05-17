@@ -7,6 +7,7 @@
 
 import UIKit
 import Photos
+import SnapKit
 
 class CustomPickerView: UIView {
     
@@ -18,7 +19,29 @@ class CustomPickerView: UIView {
         let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
         cv.translatesAutoresizingMaskIntoConstraints = false
         cv.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "photo")
+        
         return cv
+    }()
+    
+    let collectionViewSortingBar: UIView = {
+        let view = UIView()
+        let btn = UIButton(type: .system)
+        
+        view.addSubview(btn)
+        
+        btn.setTitle("최근 항목  ", for: .normal)
+        btn.setImage(UIImage(systemName: "chevron.down")?.scalePreservingAspectRatio(targetSize: CGSize(width: 10, height: 20), autoResize: true).withTintColor(.black, renderingMode: .alwaysOriginal), for: .normal)
+        btn.semanticContentAttribute = .forceRightToLeft
+        btn.setTitleColor(.black, for: .normal)
+        
+        
+        btn.snp.makeConstraints {
+            $0.leading.equalTo(view.snp.leading).offset(10)
+            $0.centerY.equalTo(view.snp.centerY)
+        }
+        
+        
+        return view
     }()
     
     let navBar: UINavigationBar = {
@@ -36,6 +59,8 @@ class CustomPickerView: UIView {
         return bar
     }()
     
+    
+    
     let previewImageContainerView: UIView = {
         let view = UIView()
         
@@ -49,6 +74,9 @@ class CustomPickerView: UIView {
         return view
     }()
     
+    var isConstraintChangeStarted: Bool = false
+    var scrollContentOffsetY:CGFloat = 0
+    
     // MARK: 디폴트 메서드
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -59,32 +87,73 @@ class CustomPickerView: UIView {
     }
     
     // MARK: UI관련 코드 - Layout / CollectionView setup
-    
     // UIView lifecycle method - last calling method
     override func didMoveToSuperview() {
         setupCollectionView()
         layoutViews()
+        addPanGestureToView()
     }
     
     func layoutViews(){
-        self.addSubview(navBar)
-        self.addSubview(previewImageContainerView)
-        self.addSubview(collectionView)
+        [navBar, previewImageContainerView, collectionView, collectionViewSortingBar].forEach { self.addSubview($0) }
         
+        navBar.snp.makeConstraints {
+            $0.top.equalTo(self.safeAreaLayoutGuide.snp.top)
+            $0.leading.equalTo(self.snp.leading)
+            $0.trailing.equalTo(self.snp.trailing)
+        }
         
-        navBar.anchor(top: self.safeAreaLayoutGuide.topAnchor, left: self.leftAnchor, right: self.rightAnchor, bottom: nil, paddingTop: 0, paddingLeft: 0, paddingRight: 0, paddingBottom: 0, width: 0, height: 0)
+        previewImageContainerView.snp.makeConstraints {
+            $0.top.equalTo(navBar.snp.bottom)
+            $0.leading.equalTo(self.snp.leading)
+            $0.trailing.equalTo(self.snp.trailing)
+            $0.height.equalTo(self.frame.width)
+        }
         
-        previewImageContainerView.anchor(top: navBar.bottomAnchor, left: self.leftAnchor, right: self.rightAnchor, bottom: nil, paddingTop: 0, paddingLeft: 0, paddingRight: 0, paddingBottom: 0, width: 0, height: self.frame.width)
-        collectionView.anchor(top: previewImageContainerView.bottomAnchor, left: self.leftAnchor, right: self.rightAnchor, bottom: self.bottomAnchor, paddingTop: 0, paddingLeft: 0, paddingRight: 0, paddingBottom: 0, width: 0, height: 0)
+        collectionViewSortingBar.snp.makeConstraints {
+            $0.top.equalTo(previewImageContainerView.snp.bottom)
+            $0.height.equalTo(50)
+            $0.leading.equalToSuperview()
+            $0.trailing.equalToSuperview()
+        }
+        collectionView.snp.makeConstraints {
+            $0.leading.equalToSuperview()
+            $0.trailing.equalToSuperview()
+            $0.top.equalTo(collectionViewSortingBar.snp.bottom)
+            $0.bottom.equalToSuperview()
+        }
+        
     }
     
     func setupCollectionView(){
+        // 컬렉션뷰 델리게이트 연결
         guard let customPickerVC = self.parentViewController as? CustomPickerViewController else {
             return
         }
         collectionView.delegate = customPickerVC
         collectionView.dataSource = customPickerVC
+        
+        // 컬렉션뷰 레이아웃 설정
+        let flowLayout = UICollectionViewFlowLayout()
+        flowLayout.scrollDirection = .vertical
+        
+        let collectionCellWidth = LayoutValues.collectionCellWidth
+        
+        flowLayout.itemSize = CGSize(width: collectionCellWidth, height: collectionCellWidth)
+        flowLayout.minimumInteritemSpacing = LayoutValues.spacingWidth
+        flowLayout.minimumLineSpacing = LayoutValues.spacingHeight
+        
+        collectionView.collectionViewLayout = flowLayout
     }
+    
+    func addPanGestureToView(){
+        let panGesture = UIPanGestureRecognizer(target: self, action: #selector(viewPanGestureHandler))
+        panGesture.delegate = self.parentViewController as! CustomPickerViewController
+        self.addGestureRecognizer(panGesture)
+        self.isUserInteractionEnabled = true
+    }
+    
+    
     
     // MARK: UINavigationBar leftBarButton / rightBarButton 이벤트
     @objc func handleBackButtonTapped(){
@@ -115,8 +184,48 @@ class CustomPickerView: UIView {
         signupViewProfileImageView.image = cropImage(sourceImage: imageView.image!, view: previewImageContainerView, imageView: signupViewProfileImageView).scalePreservingAspectRatio(targetSize: CGSize(width: 100, height: 100), autoResize: false)
         print(cropImage(sourceImage: imageView.image!, view: previewImageContainerView, imageView: signupViewProfileImageView).scalePreservingAspectRatio(targetSize: CGSize(width: 100, height: 100), autoResize: false))
         
-        
-        
         customPickerVC.dismiss(animated: true)
+    }
+    
+    // previewContainer에서 시작된 제스처면
+    @objc func viewPanGestureHandler(_ sender: UIPanGestureRecognizer){
+        print(scrollContentOffsetY)
+        if(sender.location(in: self).y < self.frame.height / 2 && sender.translation(in: self).y < 0 ){
+            
+            if(!isConstraintChangeStarted){
+                sender.setTranslation(.zero, in: self)
+                isConstraintChangeStarted = true
+                scrollContentOffsetY = collectionView.contentOffset.y
+                print("!isConstraint: ",collectionView.contentOffset.y)
+            }
+            
+            navBar.snp.updateConstraints {
+                $0.top.equalTo(self.safeAreaLayoutGuide.snp.top).offset(sender.translation(in: self).y)
+            }
+            
+            if(scrollContentOffsetY > 0){
+                collectionView.setContentOffset(CGPoint(x: collectionView.contentOffset.x, y: scrollContentOffsetY), animated: false)
+            }
+            
+            layoutIfNeeded()
+        }else{
+            UIView.animate(withDuration: 0.4) {
+                self.navBar.snp.updateConstraints {
+                    $0.top.equalTo(self.safeAreaLayoutGuide.snp.top)
+                }
+                self.layoutIfNeeded()
+            }
+            isConstraintChangeStarted = false
+        }
+        
+        if(sender.state == .ended && sender.location(in: self).y < (self.frame.height) * 3 / 4){
+            UIView.animate(withDuration: 0.4) {
+                self.navBar.snp.updateConstraints {
+                    $0.top.equalTo(self.safeAreaLayoutGuide.snp.top)
+                }
+                self.layoutIfNeeded()
+            }
+            isConstraintChangeStarted = false
+        }
     }
 }
