@@ -30,7 +30,7 @@ class CustomPickerView: UIView {
         view.addSubview(btn)
         
         btn.setTitle("최근 항목  ", for: .normal)
-        btn.setImage(UIImage(systemName: "chevron.down")?.scalePreservingAspectRatio(targetSize: CGSize(width: 10, height: 20), autoResize: true).withTintColor(.black, renderingMode: .alwaysOriginal), for: .normal)
+        btn.setImage(UIImage(systemName: "chevron.down")?.scalePreservingAspectRatio(targetSize: CGSize(width: 10, height: 20)).withTintColor(.black, renderingMode: .alwaysOriginal), for: .normal)
         btn.semanticContentAttribute = .forceRightToLeft
         btn.setTitleColor(.black, for: .normal)
         
@@ -181,22 +181,20 @@ class CustomPickerView: UIView {
         // 5. 코너 부여 및 이미지 리사이징 - 해상도 깨짐 방지
         
         signupViewProfileImageView.layer.cornerRadius = 50
-        signupViewProfileImageView.image = cropImage(sourceImage: imageView.image!, view: previewImageContainerView, imageView: signupViewProfileImageView).scalePreservingAspectRatio(targetSize: CGSize(width: 100, height: 100), autoResize: false)
-        print(cropImage(sourceImage: imageView.image!, view: previewImageContainerView, imageView: signupViewProfileImageView).scalePreservingAspectRatio(targetSize: CGSize(width: 100, height: 100), autoResize: false))
+        signupViewProfileImageView.image = cropImage(sourceImage: imageView.image!, view: previewImageContainerView, imageView: signupViewProfileImageView).scalePreservingAspectRatio(targetSize: CGSize(width: 100, height: 100))
+        print(cropImage(sourceImage: imageView.image!, view: previewImageContainerView, imageView: signupViewProfileImageView).scalePreservingAspectRatio(targetSize: CGSize(width: 100, height: 100)))
         
         customPickerVC.dismiss(animated: true)
     }
     
     // previewContainer에서 시작된 제스처면
     @objc func viewPanGestureHandler(_ sender: UIPanGestureRecognizer){
-        print(scrollContentOffsetY)
         if(sender.location(in: self).y < self.frame.height / 2 && sender.translation(in: self).y < 0 ){
             
             if(!isConstraintChangeStarted){
                 sender.setTranslation(.zero, in: self)
                 isConstraintChangeStarted = true
                 scrollContentOffsetY = collectionView.contentOffset.y
-                print("!isConstraint: ",collectionView.contentOffset.y)
             }
             
             navBar.snp.updateConstraints {
