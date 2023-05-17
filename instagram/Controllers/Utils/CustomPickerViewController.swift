@@ -55,7 +55,7 @@ class CustomPickerViewController: UIViewController {
                 
                 
                 DispatchQueue.main.async {
-                    imageView.image = image?.scalePreservingAspectRatio(targetSize: CGSize(width:self.view.frame.width, height: self.view.frame.width), autoResize: false)
+                    imageView.image = image?.scalePreservingAspectRatio(targetSize: CGSize(width:self.view.frame.width, height: self.view.frame.width))
                     
                 }
                 
@@ -70,7 +70,8 @@ class CustomPickerViewController: UIViewController {
         option.isSynchronous = true
         var image = UIImage()
         
-        manager.requestImage(for: asset, targetSize: size, contentMode: .aspectFit, options: option) { (result, _) in
+        // targetsize를 고정해두고 fetch하는것이 아니라..
+        manager.requestImage(for: asset, targetSize: size, contentMode: .aspectFill, options: option) { (result, _) in
             image = result!
         }
         
@@ -99,7 +100,10 @@ extension CustomPickerViewController: UICollectionViewDataSource{
         let imageView = UIImageView()
         
         cell.backgroundColor = .green
+        cell.clipsToBounds = true
         cell.addSubview(imageView)
+        
+        imageView.contentMode = .scaleAspectFill
         
         imageView.snp.makeConstraints {
             $0.leading.equalTo(cell.snp.leading)
@@ -108,7 +112,9 @@ extension CustomPickerViewController: UICollectionViewDataSource{
             $0.trailing.equalTo(cell.snp.trailing)
         }
         
-        imageView.image = convertPHAssetToUIImage(asset: fetchResults!.object(at: indexPath.item), size: CGSize(width: LayoutValues.collectionCellWidth, height: LayoutValues.collectionCellWidth))
+        // 이미지 해상도깨짐..
+        // 여기 size 파라미터때문에 해상도가 깨짐
+        imageView.image = convertPHAssetToUIImage(asset: fetchResults!.object(at: indexPath.item), size: CGSize(width: LayoutValues.collectionCellWidth, height: LayoutValues.collectionCellWidth )).scalePreservingAspectRatio(targetSize: CGSize(width: LayoutValues.collectionCellWidth , height: LayoutValues.collectionCellWidth ))
         
         return cell
     }
