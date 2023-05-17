@@ -65,9 +65,19 @@ class CustomPickerView: UIView {
         let view = UIView()
         
         let preImageView = UIImageView()
+        preImageView.contentMode = .scaleAspectFill
         view.addSubview(preImageView)
         
-        preImageView.anchor(top: view.topAnchor, left: view.leftAnchor, right: view.rightAnchor, bottom: view.bottomAnchor, paddingTop: 0, paddingLeft: 0, paddingRight: 0, paddingBottom: 0, width: 0, height: 0)
+        // 상-하 사이즈를 늘리다가 확대되면서 이미지가 벗어나고 있음
+        // 오토레이아웃 설정에서는 위에만 붙여두고 이미지 fetch시에 높이값을 크게 부여하면?
+        // 이미지에 대한 aspectRatio 속성을 부여해보자
+        preImageView.snp.makeConstraints {
+            $0.top.equalTo(view.snp.top)
+            $0.leading.equalTo(view.snp.leading)
+            $0.bottom.equalTo(view.snp.bottom)
+        }
+        // 터치이벤트 발생후 previewImage뷰에 이미지 등록할때 aspect제약조건ㅇ추가해보기ㅜ 
+
         
         view.clipsToBounds = true
         
