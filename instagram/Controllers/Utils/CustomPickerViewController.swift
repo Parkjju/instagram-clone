@@ -10,7 +10,14 @@ import Photos
 
 class CustomPickerViewController: UIViewController {
     
-    var fetchResults:PHFetchResult<PHAsset>?
+    var fetchResults:PHFetchResult<PHAsset>?{
+        didSet{
+            let view = self.view as! CustomPickerView
+            let collectionView = view.collectionView
+            
+            collectionView.reloadData()
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -19,13 +26,14 @@ class CustomPickerViewController: UIViewController {
         customView.backgroundColor = .defaultNavigationColor
         self.view = customView
         
+        
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        setupPhotos()
+        setupThumbnailPhotos()
     }
     
-    func setupPhotos(){
+    func setupThumbnailPhotos(){
         fetchResults = fetchPhotos()
         
         let imageManager = PHImageManager.default()
@@ -56,6 +64,19 @@ class CustomPickerViewController: UIViewController {
         
     }
     
+    func convertPHAssetToUIImage(asset: PHAsset, size: CGSize) -> UIImage{
+        let manager = PHImageManager.default()
+        let option = PHImageRequestOptions()
+        option.isSynchronous = true
+        var image = UIImage()
+        
+        manager.requestImage(for: asset, targetSize: size, contentMode: .aspectFit, options: option) { (result, _) in
+            image = result!
+        }
+        
+        return image
+    }
+    
     
 }
 
@@ -66,18 +87,35 @@ extension CustomPickerViewController: UICollectionViewDelegate{
 extension CustomPickerViewController: UICollectionViewDataSource{
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 1
+        guard let count = fetchResults?.count else {
+            return 0
+        }
+        return count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "photo", for: indexPath)
         
+        let imageView = UIImageView()
+        
+        cell.backgroundColor = .green
+        cell.addSubview(imageView)
+        
+        imageView.snp.makeConstraints {
+            $0.leading.equalTo(cell.snp.leading)
+            $0.top.equalTo(cell.snp.top)
+            $0.bottom.equalTo(cell.snp.bottom)
+            $0.trailing.equalTo(cell.snp.trailing)
+        }
+        
+        imageView.image = convertPHAssetToUIImage(asset: fetchResults!.object(at: indexPath.item), size: CGSize(width: LayoutValues.collectionCellWidth, height: LayoutValues.collectionCellWidth))
+        
         return cell
     }
 }
 
-extension CustomPickerViewController: UICollectionViewDelegateFlowLayout{
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: collectionView.frame.width / 4, height: collectionView.frame.width / 4)
+extension CustomPickerViewController: UIGestureRecognizerDelegate{
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        return true
     }
 }
