@@ -126,6 +126,7 @@ extension UIImageView{
             sender.scale = 1
         }
         
+        
         if(sender.state == .ended){
             checkImageOriginIsZero(sender)
         }
@@ -139,9 +140,10 @@ extension UIImageView{
         if(sender.view!.transform.a > 1 ){
             sender.view!.center.x += sender.translation(in: sender.view).x
             sender.view!.center.y += sender.translation(in: sender.view).y
-
+            
             sender.setTranslation(.zero, in: sender.view)
         }else{
+            // 얘는 성능문제가 발생하지 않나
             sender.view?.frame.origin = sender.translation(in: sender.view)
         }
         
@@ -193,16 +195,15 @@ extension UIImageView{
     }
     
     func checkImageOriginIsZero(_ sender: UIPinchGestureRecognizer){
+
         if(sender.view!.frame.origin.x > 0 || sender.view!.frame.origin.y > 0){
             let imageView = sender.view as! UIImageView
             UIView.animate(withDuration: 0.3) {
                 sender.view!.transform.a = 1
                 sender.view!.transform.d = 1
                 
-                sender.view!.center.x = sender.view!.superview!.center.x
-                sender.view!.center.y = sender.view!.frame.height / 2
-                
-                imageView.image = imageView.image?.scalePreservingAspectRatio(targetSize: CGSize(width: sender.view!.superview!.frame.width, height: sender.view!.superview!.frame.width), autoResize: true)
+                sender.view!.frame.origin.x = 0
+                sender.view!.frame.origin.y = 0
             }
             
             
@@ -217,6 +218,7 @@ extension UIImageView{
     }
     
     func enableDrag(){
+        
         let panGesture = UIPanGestureRecognizer(target: self, action: #selector(startDragging))
         self.isUserInteractionEnabled = true
         self.addGestureRecognizer(panGesture)
@@ -247,4 +249,12 @@ func cropImage(sourceImage: UIImage, view: UIView, imageView: UIImageView) -> UI
     )!
     
     return UIImage(cgImage: croppedCGImage)
+}
+
+// MARK: 레이아웃 관련 수치
+struct LayoutValues{
+    static let spacingWidth:CGFloat = 2
+    static let spacingHeight:CGFloat = 2
+    static let cellColumns: CGFloat = 4
+    static let collectionCellWidth = (UIScreen.main.bounds.width - LayoutValues.spacingWidth * (LayoutValues.cellColumns - 1)) / LayoutValues.cellColumns
 }
