@@ -82,7 +82,11 @@ class CustomPickerViewController: UIViewController {
 }
 
 extension CustomPickerViewController: UICollectionViewDelegate{
-    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let view = self.view as! CustomPickerView
+        let imageView = view.previewImageContainerView.subviews.first as! UIImageView
+        imageView.image = convertPHAssetToUIImage(asset: fetchResults!.object(at: indexPath.item), size: CGSize(width: view.frame.width, height: view.frame.height)).scalePreservingAspectRatio(targetSize: CGSize(width: view.frame.width, height: view.frame.width))
+    }
 }
 
 extension CustomPickerViewController: UICollectionViewDataSource{
@@ -122,6 +126,10 @@ extension CustomPickerViewController: UICollectionViewDataSource{
 
 extension CustomPickerViewController: UIGestureRecognizerDelegate{
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
-        return true
+        
+        guard let _ = otherGestureRecognizer.view as? UIImageView else {
+            return true
+        }
+        return false
     }
 }
