@@ -41,7 +41,7 @@ extension UIView{
 
 // MARK: Image resizing
 extension UIImage{
-    func newScaleOfImage(targetSize: CGSize, autoResize: Bool) -> CGSize{
+    func newScaleOfImage(targetSize: CGSize) -> CGSize{
         // 가로세로 스케일링 비율 측정
         let widthScaleRatio = targetSize.width / self.size.width
         let heightScaleRatio = targetSize.height / self.size.height
@@ -50,14 +50,13 @@ extension UIImage{
         let scaleFactor = min(widthScaleRatio, heightScaleRatio)
         
         // 이미지 리사이징시 비율은 맞추되, 오토레이아웃에 설정해둔 height값 기준으로 크기를 최대높이를 조절한다
-        return CGSize(width: self.size.width * scaleFactor, height: autoResize ? self.size.height * scaleFactor : 100)
+        return CGSize(width: self.size.width * scaleFactor, height:self.size.height * scaleFactor)
     }
     
-    // autoResize 파라미터가 필요할지 -> 나중에 프로필사진 등록 후에 확인필요
-    func scalePreservingAspectRatio(targetSize: CGSize, autoResize: Bool) -> UIImage{
+    func scalePreservingAspectRatio(targetSize: CGSize) -> UIImage{
         
         // 새로운 스케일 계산
-        let scaledSize = newScaleOfImage(targetSize: targetSize, autoResize: autoResize)
+        let scaledSize = newScaleOfImage(targetSize: targetSize)
         let renderer = UIGraphicsImageRenderer(size: scaledSize)
         
         let scaledImage = renderer.image { _ in
