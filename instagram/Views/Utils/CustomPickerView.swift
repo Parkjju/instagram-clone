@@ -65,21 +65,22 @@ class CustomPickerView: UIView {
         let view = UIView()
         
         let preImageView = UIImageView()
-        preImageView.contentMode = .scaleAspectFill
         view.addSubview(preImageView)
         
         // 상-하 사이즈를 늘리다가 확대되면서 이미지가 벗어나고 있음
         // 오토레이아웃 설정에서는 위에만 붙여두고 이미지 fetch시에 높이값을 크게 부여하면?
         // 이미지에 대한 aspectRatio 속성을 부여해보자
+
+        // aspectFill을 하면 이미지가 확대되어버린다
+        // 이미지뷰 스케일 검사를 해보자
         preImageView.snp.makeConstraints {
             $0.top.equalTo(view.snp.top)
             $0.leading.equalTo(view.snp.leading)
-            $0.bottom.equalTo(view.snp.bottom)
         }
-        // 터치이벤트 발생후 previewImage뷰에 이미지 등록할때 aspect제약조건ㅇ추가해보기ㅜ 
-
+        // 터치이벤트 발생후 previewImage뷰에 이미지 등록할때 aspect제약조건 추가해보기
         
         view.clipsToBounds = true
+        
         
         return view
     }()
@@ -159,8 +160,8 @@ class CustomPickerView: UIView {
     func addPanGestureToView(){
         let panGesture = UIPanGestureRecognizer(target: self, action: #selector(viewPanGestureHandler))
         panGesture.delegate = self.parentViewController as! CustomPickerViewController
-        self.addGestureRecognizer(panGesture)
-        self.isUserInteractionEnabled = true
+        collectionView.addGestureRecognizer(panGesture)
+        collectionView.isUserInteractionEnabled = true
     }
     
     
