@@ -86,6 +86,25 @@ extension CustomPickerViewController: UICollectionViewDelegate{
         let view = self.view as! CustomPickerView
         let imageView = view.previewImageContainerView.subviews.first as! UIImageView
         imageView.image = convertPHAssetToUIImage(asset: fetchResults!.object(at: indexPath.item), size: CGSize(width: view.frame.width, height: view.frame.height)).scalePreservingAspectRatio(targetSize: CGSize(width: view.frame.width, height: view.frame.width))
+        
+        print(imageView.frame.width)
+        
+        imageView.transform.a = 1
+        imageView.transform.d = 1
+        
+        // 높이가 짧으면 높이 맞추고 좌우로
+        // 너비 좁으면 너비 맞추고 상하로
+        if(imageView.frame.width < view.frame.width){
+            let ratio = view.frame.width / imageView.frame.width
+            imageView.transform.a = ratio
+            imageView.transform.d = ratio
+        }else if(imageView.frame.height < view.frame.height){
+            print(imageView.frame.width)
+            print(imageView.frame.height)
+            imageView.snp.makeConstraints {
+                $0.bottom.equalTo(view.previewImageContainerView.snp.bottom)
+            }
+        }
     }
 }
 

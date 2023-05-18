@@ -136,7 +136,7 @@ extension UIImageView{
         // 이동량을 더하는 형태 -> 계속 누적되어 목표값을 넘어서게됨
         // 직전의 translate값을 저장
         // 변화하는 상태값을 계속 트래킹하며 이미지뷰 origin위치를 변경해줘야함
-        if(sender.view!.transform.a > 1 ){
+        if(sender.view!.transform.a > 1 || sender.view!.transform.d > 1){
             sender.view!.center.x += sender.translation(in: sender.view).x
             sender.view!.center.y += sender.translation(in: sender.view).y
             
@@ -194,7 +194,6 @@ extension UIImageView{
     }
     
     func checkImageOriginIsZero(_ sender: UIPinchGestureRecognizer){
-
         if(sender.view!.frame.origin.x > 0 || sender.view!.frame.origin.y > 0){
             let imageView = sender.view as! UIImageView
             UIView.animate(withDuration: 0.3) {
@@ -204,8 +203,6 @@ extension UIImageView{
                 sender.view!.frame.origin.x = 0
                 sender.view!.frame.origin.y = 0
             }
-            
-            
         }
     }
     
