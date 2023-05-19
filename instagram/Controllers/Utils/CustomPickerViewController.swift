@@ -26,7 +26,6 @@ class CustomPickerViewController: UIViewController {
         customView.backgroundColor = .defaultNavigationColor
         self.view = customView
         
-        
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -53,12 +52,9 @@ class CustomPickerViewController: UIViewController {
                 imageView.enableZoom()
                 imageView.enableDrag()
                 
-                
                 DispatchQueue.main.async {
                     imageView.image = image?.scalePreservingAspectRatio(targetSize: CGSize(width:self.view.frame.width, height: self.view.frame.width))
-                    
                 }
-                
             }
         }
         
@@ -82,29 +78,63 @@ class CustomPickerViewController: UIViewController {
 }
 
 extension CustomPickerViewController: UICollectionViewDelegate{
+    // didSelect 비동기?
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
+        
         let view = self.view as! CustomPickerView
         let imageView = view.previewImageContainerView.subviews.first as! UIImageView
-        imageView.image = convertPHAssetToUIImage(asset: fetchResults!.object(at: indexPath.item), size: CGSize(width: view.frame.width, height: view.frame.height)).scalePreservingAspectRatio(targetSize: CGSize(width: view.frame.width, height: view.frame.width))
         
-        print(imageView.frame.width)
+        print("===== 변환 전 =====")
+        print(imageView.transform.a)
+        print(imageView.transform.d)
+        print("=================")
+        let image = convertPHAssetToUIImage(asset: fetchResults!.object(at: indexPath.item), size: CGSize(width: view.frame.width, height: view.frame.height)).scalePreservingAspectRatio(targetSize: CGSize(width: view.frame.width, height: view.frame.height))
         
+        // 이미지뷰의 frame width를 바로 적용해줘야됨
+        imageView.image = image
+        
+        // MARK: transform 변환 문제는 비동기처리 관련 이슈였음!
+        // 값 세팅은 잘되는데 main쓰레드에서 작업이 이루어지지 않는건가
+//        let transformTaskInit = DispatchWorkItem {
+//            imageView.transform.a = 1
+//            imageView.transform.d = 1
+//        }
+//
+//        let transformTaskMain = DispatchWorkItem {
+//            var ratio: CGFloat = 0.0
+//
+//            if(imageView.frame.height < view.frame.width){
+//                ratio = view.frame.width / imageView.frame.height
+//
+//                // 이 코드가 반영이 바로 안됨
+//                DispatchQueue.main.async {
+//                    imageView.transform.a = ratio
+//                    imageView.transform.d = ratio
+//                }
+//            }
+//        }
+//
+//        transformTaskInit.notify(queue: DispatchQueue.main, execute: transformTaskMain)
+////
+//        DispatchQueue.main.async(execute: transformTaskInit)
+
         imageView.transform.a = 1
         imageView.transform.d = 1
-        
-        // 높이가 짧으면 높이 맞추고 좌우로
-        // 너비 좁으면 너비 맞추고 상하로
-        if(imageView.frame.width < view.frame.width){
-            let ratio = view.frame.width / imageView.frame.width
+
+        var ratio: CGFloat = 0.0
+        if(imageView.frame.height < view.frame.width){
+            ratio = view.frame.width / imageView.frame.height
+
+            // 이 코드가 반영이 바로 안됨
+            // 값 세팅은 메모리 상에서 잘 됨
             imageView.transform.a = ratio
             imageView.transform.d = ratio
-        }else if(imageView.frame.height < view.frame.height){
-            print(imageView.frame.width)
-            print(imageView.frame.height)
-            imageView.snp.makeConstraints {
-                $0.bottom.equalTo(view.previewImageContainerView.snp.bottom)
-            }
         }
+        print("===== 변환 후 =====")
+        print(imageView.transform.a)
+        print(imageView.transform.d)
+        print("=================")
     }
 }
 
@@ -120,15 +150,13 @@ extension CustomPickerViewController: UICollectionViewDataSource{
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "photo", for: indexPath)
         
-        let imageView = UIImageView()
+        let cellImageView = UIImageView()
         
-        cell.backgroundColor = .green
         cell.clipsToBounds = true
-        cell.addSubview(imageView)
+        cell.addSubview(cellImageView)
         
-        imageView.contentMode = .scaleAspectFill
-        
-        imageView.snp.makeConstraints {
+        cellImageView.contentMode = .scaleAspectFill
+        cellImageView.snp.makeConstraints {
             $0.leading.equalTo(cell.snp.leading)
             $0.top.equalTo(cell.snp.top)
             $0.bottom.equalTo(cell.snp.bottom)
@@ -137,15 +165,13 @@ extension CustomPickerViewController: UICollectionViewDataSource{
         
         // 이미지 해상도깨짐..
         // 여기 size 파라미터때문에 해상도가 깨짐
-        imageView.image = convertPHAssetToUIImage(asset: fetchResults!.object(at: indexPath.item), size: CGSize(width: LayoutValues.collectionCellWidth, height: LayoutValues.collectionCellWidth )).scalePreservingAspectRatio(targetSize: CGSize(width: LayoutValues.collectionCellWidth , height: LayoutValues.collectionCellWidth ))
-        
+        cellImageView.image = convertPHAssetToUIImage(asset: fetchResults!.object(at: indexPath.item), size: CGSize(width: LayoutValues.collectionCellWidth, height: LayoutValues.collectionCellWidth )).scalePreservingAspectRatio(targetSize: CGSize(width: LayoutValues.collectionCellWidth , height: LayoutValues.collectionCellWidth ))
         return cell
     }
 }
 
 extension CustomPickerViewController: UIGestureRecognizerDelegate{
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
-        
         guard let _ = otherGestureRecognizer.view as? UIImageView else {
             return true
         }

@@ -152,6 +152,7 @@ extension UIImageView{
     }
     
     func checkImageOriginIsZero(_ sender: UIPanGestureRecognizer){
+        
         if(sender.view!.transform.a != 1){
             // 프레임이 왼쪽경계보다 안쪽으로 당겨질때
             if(sender.view!.frame.origin.x > 0){
