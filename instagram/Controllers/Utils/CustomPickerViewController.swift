@@ -84,11 +84,7 @@ extension CustomPickerViewController: UICollectionViewDelegate{
         
         let view = self.view as! CustomPickerView
         let imageView = view.previewImageContainerView.subviews.first as! UIImageView
-        
-//        print("===== 변환 전 =====")
-//        print(imageView.transform.a)
-//        print(imageView.transform.d)
-//        print("=================")
+    
         let image = convertPHAssetToUIImage(asset: fetchResults!.object(at: indexPath.item), size: CGSize(width: view.frame.width, height: view.frame.height)).scalePreservingAspectRatio(targetSize: CGSize(width: view.frame.width, height: view.frame.height))
         
         // 이미지뷰의 frame width를 바로 적용해줘야됨
@@ -111,6 +107,7 @@ extension CustomPickerViewController: UICollectionViewDelegate{
                 DispatchQueue.main.async {
                     imageView.transform.a = ratio
                     imageView.transform.d = ratio
+                    imageView.checkImageOriginIsZero(imageView.gestureRecognizers?.first as! UIPinchGestureRecognizer)
                 }
             }
         }
@@ -118,21 +115,6 @@ extension CustomPickerViewController: UICollectionViewDelegate{
         transformTaskInit.notify(queue: DispatchQueue.main, execute: transformTaskMain)
         DispatchQueue.main.async(execute: transformTaskInit)
 
-//        imageView.transform.a = 1
-//        imageView.transform.d = 1
-//
-//        var ratio: CGFloat = 0.0
-//        if(imageView.frame.height < view.frame.width){
-//            ratio = view.frame.width / imageView.frame.height
-//
-//            imageView.transform.a = ratio
-//            imageView.transform.d = ratio
-//        }
-        
-//        print("===== 변환 후 =====")
-//        print(imageView.transform.a)
-//        print(imageView.transform.d)
-//        print("=================")
     }
 }
 
