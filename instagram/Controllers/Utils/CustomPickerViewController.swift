@@ -52,9 +52,31 @@ class CustomPickerViewController: UIViewController {
                 imageView.enableZoom()
                 imageView.enableDrag()
                 
-                DispatchQueue.main.async {
+                // 초기 로드 이미지 스케일링 로직
+                let transformTaskInit = DispatchWorkItem {
                     imageView.image = image?.scalePreservingAspectRatio(targetSize: CGSize(width:self.view.frame.width, height: self.view.frame.width))
+                    imageView.transform.a = 1
+                    imageView.transform.d = 1
+                    
                 }
+
+                let transformTaskMain = DispatchWorkItem {
+                    var ratio: CGFloat = 0.0
+
+                    if(imageView.frame.height < self.view.frame.width){
+                        ratio = self.view.frame.width / imageView.frame.height
+
+                        // 이 코드가 반영이 바로 안됨
+                        DispatchQueue.main.async {
+                            imageView.transform.a = ratio
+                            imageView.transform.d = ratio
+                            imageView.checkImageOriginIsZero(imageView.gestureRecognizers?.first as! UIPinchGestureRecognizer)
+                        }
+                    }
+                }
+
+                transformTaskInit.notify(queue: DispatchQueue.main, execute: transformTaskMain)
+                DispatchQueue.main.async(execute: transformTaskInit)
             }
         }
         

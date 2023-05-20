@@ -105,6 +105,8 @@ class CustomPickerView: UIView {
         addPanGestureToView()
     }
     
+    
+    
     func layoutViews(){
         [navBar, previewImageContainerView, collectionView, collectionViewSortingBar].forEach { self.addSubview($0) }
         
