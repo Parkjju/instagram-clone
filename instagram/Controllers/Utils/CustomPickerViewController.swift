@@ -85,10 +85,10 @@ extension CustomPickerViewController: UICollectionViewDelegate{
         let view = self.view as! CustomPickerView
         let imageView = view.previewImageContainerView.subviews.first as! UIImageView
         
-        print("===== 변환 전 =====")
-        print(imageView.transform.a)
-        print(imageView.transform.d)
-        print("=================")
+//        print("===== 변환 전 =====")
+//        print(imageView.transform.a)
+//        print(imageView.transform.d)
+//        print("=================")
         let image = convertPHAssetToUIImage(asset: fetchResults!.object(at: indexPath.item), size: CGSize(width: view.frame.width, height: view.frame.height)).scalePreservingAspectRatio(targetSize: CGSize(width: view.frame.width, height: view.frame.height))
         
         // 이미지뷰의 frame width를 바로 적용해줘야됨
@@ -96,45 +96,43 @@ extension CustomPickerViewController: UICollectionViewDelegate{
         
         // MARK: transform 변환 문제는 비동기처리 관련 이슈였음!
         // 값 세팅은 잘되는데 main쓰레드에서 작업이 이루어지지 않는건가
-//        let transformTaskInit = DispatchWorkItem {
-//            imageView.transform.a = 1
-//            imageView.transform.d = 1
-//        }
-//
-//        let transformTaskMain = DispatchWorkItem {
-//            var ratio: CGFloat = 0.0
-//
-//            if(imageView.frame.height < view.frame.width){
-//                ratio = view.frame.width / imageView.frame.height
-//
-//                // 이 코드가 반영이 바로 안됨
-//                DispatchQueue.main.async {
-//                    imageView.transform.a = ratio
-//                    imageView.transform.d = ratio
-//                }
-//            }
-//        }
-//
-//        transformTaskInit.notify(queue: DispatchQueue.main, execute: transformTaskMain)
-////
-//        DispatchQueue.main.async(execute: transformTaskInit)
-
-        imageView.transform.a = 1
-        imageView.transform.d = 1
-
-        var ratio: CGFloat = 0.0
-        if(imageView.frame.height < view.frame.width){
-            ratio = view.frame.width / imageView.frame.height
-
-            // 이 코드가 반영이 바로 안됨
-            // 값 세팅은 메모리 상에서 잘 됨
-            imageView.transform.a = ratio
-            imageView.transform.d = ratio
+        let transformTaskInit = DispatchWorkItem {
+            imageView.transform.a = 1
+            imageView.transform.d = 1
         }
-        print("===== 변환 후 =====")
-        print(imageView.transform.a)
-        print(imageView.transform.d)
-        print("=================")
+
+        let transformTaskMain = DispatchWorkItem {
+            var ratio: CGFloat = 0.0
+
+            if(imageView.frame.height < view.frame.width){
+                ratio = view.frame.width / imageView.frame.height
+
+                // 이 코드가 반영이 바로 안됨
+                DispatchQueue.main.async {
+                    imageView.transform.a = ratio
+                    imageView.transform.d = ratio
+                }
+            }
+        }
+
+        transformTaskInit.notify(queue: DispatchQueue.main, execute: transformTaskMain)
+        DispatchQueue.main.async(execute: transformTaskInit)
+
+//        imageView.transform.a = 1
+//        imageView.transform.d = 1
+//
+//        var ratio: CGFloat = 0.0
+//        if(imageView.frame.height < view.frame.width){
+//            ratio = view.frame.width / imageView.frame.height
+//
+//            imageView.transform.a = ratio
+//            imageView.transform.d = ratio
+//        }
+        
+//        print("===== 변환 후 =====")
+//        print(imageView.transform.a)
+//        print(imageView.transform.d)
+//        print("=================")
     }
 }
 
