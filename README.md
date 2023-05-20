@@ -99,7 +99,7 @@ https://github.com/Parkjju/instagram-clone/assets/75518683/cd62f343-4ebd-48b2-b0
 비동기처리가 되어 있는 코드
 ```
   
-스택 오버플로우에 남겨진 질문 가운데 테이블뷰 클릭을 두번 해야 UI변경이 이루어진다는 이슈가 있다는 것을 확인했습니다. 답변으로도 명확한 답을 제시하고 있지는 못하는 것을 확인하였습니다. transform 변환 값을 비동기처리 하여 문제는 해결되었습니다.
+스택 오버플로우에 남겨진 질문 가운데 테이블뷰 클릭을 두번 해야 UI변경이 이루어진다는 이슈가 있다는 것을 확인했습니다. 답변으로도 명확한 답을 제시하고 있지는 못하는 것을 확인하였습니다. transform 변환 값을 비동기처리 하여 문제는 해결되었습니다. [(소스코드)](https://github.com/Parkjju/instagram-clone/blob/da70d88513e941ee458522ea6838db14bd8c90cf/instagram/Controllers/Utils/CustomPickerViewController.swift#L104-L141)
 
   
   
