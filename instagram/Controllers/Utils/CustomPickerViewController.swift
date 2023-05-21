@@ -43,9 +43,8 @@ class CustomPickerViewController: UIViewController {
         if let asset = fetchResults?.firstObject{
             imageManager.requestImage(for: asset, targetSize: CGSize(width: self.view.frame.width, height: self.view.frame.width), contentMode: .aspectFill, options: requestOptions) { (image, _) in
                 
-                
-                let customPickerView = self.view as! CustomPickerView
-                let imageView = customPickerView.previewImageContainerView.subviews.first as! UIImageView
+                let view = self.view as! CustomPickerView
+                let imageView = view.previewImageContainerView.subviews.first as! UIImageView
                 
                 // 핀치 이벤트 등록
                 // scale은 고정하되 이미지가 다른 영역을 침범하지 않아야함 - clipsToBounds처리
@@ -54,7 +53,7 @@ class CustomPickerViewController: UIViewController {
                 
                 // 초기 로드 이미지 스케일링 로직
                 let transformTaskInit = DispatchWorkItem {
-                    imageView.image = image?.scalePreservingAspectRatio(targetSize: CGSize(width:self.view.frame.width, height: self.view.frame.width))
+                    imageView.image = image?.scalePreservingAspectRatio(targetSize: CGSize(width:view.frame.width, height: view.frame.height))
                     imageView.transform.a = 1
                     imageView.transform.d = 1
                     
@@ -63,13 +62,24 @@ class CustomPickerViewController: UIViewController {
                 let transformTaskMain = DispatchWorkItem {
                     var ratio: CGFloat = 0.0
 
-                    if(imageView.frame.height < self.view.frame.width){
-                        ratio = self.view.frame.width / imageView.frame.height
+                    if(imageView.frame.height < view.frame.width){
+                        ratio = view.frame.width / imageView.frame.height
 
                         // 이 코드가 반영이 바로 안됨
                         DispatchQueue.main.async {
                             imageView.transform.a = ratio
                             imageView.transform.d = ratio
+                            imageView.checkImageOriginIsZero(imageView.gestureRecognizers?.first as! UIPinchGestureRecognizer)
+                        }
+                    }
+                    
+                    if(imageView.frame.width < self.view.frame.width){
+                        ratio = view.frame.width / imageView.frame.width
+                        
+                        DispatchQueue.main.async {
+                            imageView.transform.a = 1
+                            imageView.transform.d = 1
+                            
                             imageView.checkImageOriginIsZero(imageView.gestureRecognizers?.first as! UIPinchGestureRecognizer)
                         }
                     }
